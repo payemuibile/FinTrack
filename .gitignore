@@ -1,0 +1,22 @@
+# virtual environment
+.venv/
+venv/
+.idea
+
+#python cache
+__pycache__/
+*.pyc
+*.pyo
+
+#Environment variables
+.env
+
+#Database (for SQLite development)
+db.sqlite3
+
+#Static files (generated)
+.DS_Store
+Thumb.db
+
+#development guide
+personal-finance-tracker-guide.md
