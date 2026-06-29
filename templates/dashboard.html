@@ -177,5 +177,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% load static %}{% static 'js/dashboard.js' %}"></script>
+{% load static %}
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

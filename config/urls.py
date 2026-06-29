@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('transactions.urls')),
     path('api/auth/', include('accounts.urls')),
-    #path('', include('transactions.template_urls'))  #for HTML views
+    path('', include('transactions.template_urls'))  #for HTML views
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
