@@ -10,7 +10,16 @@ from .models import Category, Transaction, Budget, UserProfile
 from .serializers import CategorySerializer, TransactionSerializer, BudgetSerializer, UserProfileSerializer
 from .filters import TransactionFilter
 
+"""
+#checking the views if i will get a data to the frontend
+def category_view_modal(request):
 
+    category = Category.objects.all().values('name').distinct()
+
+    context = {
+        category : 'category'
+    }
+    return render(request, 'dashboard.html', context)"""
 
 # Create your views here.
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -23,6 +32,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # if not Category.objects.filter(user=self.request.user, is_default=True).exists():
+        #     seed_default_categories(self.request.user)
         #CRITICAL: Users only see their own categories
         return Category.objects.filter(user=self.request.user)
 
@@ -133,7 +144,9 @@ class BudgetViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Budget.objects.filter(user=self.request.user).select_related('category')
+        return Budget.objects.filter(user=self.request.user).select_related(
+            'category'
+        ).order_by('-year', '-month', 'category__name')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

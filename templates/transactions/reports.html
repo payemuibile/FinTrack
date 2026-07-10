@@ -1,0 +1,100 @@
+<!-- templates/transactions/reports.html -->
+{% extends 'base.html' %}
+{% block title %}Reports — FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-0">Reports</h1>
+        <p class="text-muted mb-0">Deeper insights into your finances</p>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <select class="form-select form-select-sm" id="reportMonth" style="width:auto"></select>
+        <select class="form-select form-select-sm" id="reportYear" style="width:auto"></select>
+        <button class="btn btn-outline-secondary" id="reportExportBtn">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- Summary strip -->
+<div class="row g-4 mb-4">
+    <div class="col-sm-4">
+        <div class="card stat-card p-3">
+            <p class="text-muted small mb-1">Income</p>
+            <h4 class="fw-bold text-success mb-0" id="reportIncome">$0.00</h4>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card stat-card p-3">
+            <p class="text-muted small mb-1">Expenses</p>
+            <h4 class="fw-bold text-danger mb-0" id="reportExpenses">$0.00</h4>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card stat-card p-3">
+            <p class="text-muted small mb-1">Net Savings</p>
+            <h4 class="fw-bold mb-0" id="reportNet">$0.00</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-3">
+                <h6 class="fw-semibold mb-0">Spending Breakdown</h6>
+                <small class="text-muted" id="breakdownLabel">Selected month</small>
+            </div>
+            <div class="card-body" id="breakdownContainer">
+                <canvas id="breakdownChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pt-3">
+                <h6 class="fw-semibold mb-0">6-Month Trend</h6>
+                <small class="text-muted">Income vs Expenses</small>
+            </div>
+            <div class="card-body">
+                <canvas id="reportTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 pt-3">
+                <h6 class="fw-semibold mb-0">Category Breakdown</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-end">Transactions</th>
+                                <th class="text-end">Total Spent</th>
+                                <th class="text-end">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryBreakdownTable">
+                            <tr><td colspan="4" class="text-center py-4">
+                                <div class="spinner-border spinner-border-sm text-primary"></div>
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'js/reports.js' %}"></script>
+{% endblock %}

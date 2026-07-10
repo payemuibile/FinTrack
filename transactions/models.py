@@ -23,7 +23,7 @@ class Category(models.Model):
         related_name='categories'
     )
     name = models.CharField(max_length=100)
-    category = models.CharField(
+    category_type = models.CharField(
         max_length=10,
         choices=TYPES_CHOICES,
         default=EXPENSE
@@ -154,8 +154,6 @@ class UserProfile(models.Model):
         ('EUR', '€ Euro'),
         ('GBP', '£ British Pound'),
         ('NGN', '₦ Nigerian Naira'),
-        ('GHS', '₵ Ghanaian Cedi'),
-        ('KES', 'Ksh Kenyan Shilling'),
     ]
 
     user = models.OneToOneField(
@@ -191,7 +189,6 @@ def seed_default_categories(user):
     defaults = [
         # (name, type, color, icon)
         ('Salary', 'income', '#28a745', 'bi-briefcase'),
-        ('Freelance', 'income', '#17a2b8', 'bi-laptop'),
         ('Food & Dining', 'expense', '#fd7e14', 'bi-cup-straw'),
         ('Transport', 'expense', '#6f42c1', 'bi-car-front'),
         ('Housing & Rent', 'expense', '#dc3545', 'bi-house'),
@@ -206,7 +203,7 @@ def seed_default_categories(user):
             user=user,
             name=name,
             defaults={
-                'category': cat_type,
+                'category_type': cat_type,
                 'color': color,
                 'icon': icon,
                 'is_default': True,

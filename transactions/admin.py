@@ -12,8 +12,8 @@ class TransactionAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     #note for all 'category' it was 'category_type' before
-    list_display = ['name', 'category', 'user', 'color']
-    list_filter = ['category']
+    list_display = ['name', 'category_type', 'user', 'color']
+    list_filter = ['category_type']
 
 @admin.register(Budget)
 class BudgetAdmin(admin.ModelAdmin):

@@ -74,6 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     if (toggle && sidebar) {
         toggle.addEventListener('click', () => {
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                sidebar.classList.toggle('mobile-open');
+                return;
+            }
+
             sidebar.classList.toggle('collapsed');
         });
     }

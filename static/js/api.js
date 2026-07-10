@@ -1,4 +1,7 @@
-// Central place for all API calls
+// static/js/api.js
+// Central place for all API calls.
+// This REPLACES your existing api.js — it includes everything from the
+// original guide plus categories CRUD, budgets CRUD, profile, and CSV export.
 
 const API_BASE = '/api';
 
@@ -29,7 +32,6 @@ const ApiClient = {
         if (response.status === 401) {
             const refreshed = await this.refreshToken();
             if (refreshed) {
-                // Retry the original request with new token
                 config.headers['Authorization'] = `Bearer ${Auth.getAccessToken()}`;
                 return fetch(`${API_BASE}${endpoint}`, config);
             } else {
@@ -59,10 +61,15 @@ const ApiClient = {
         return false;
     },
 
-    // Transactions
+    // ===== TRANSACTIONS =====
     async getTransactions(params = {}) {
         const query = new URLSearchParams(params).toString();
         const res = await this.request(`/transactions/?${query}`);
+        return res.json();
+    },
+
+    async getTransaction(id) {
+        const res = await this.request(`/transactions/${id}/`);
         return res.json();
     },
 
@@ -101,15 +108,96 @@ const ApiClient = {
         return res.json();
     },
 
-    // Categories
+    async downloadCsv(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        const res = await this.request(`/transactions/export-csv/?${query}`);
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'transactions.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    },
+
+    // ===== CATEGORIES =====
     async getCategories() {
         const res = await this.request('/categories/');
         return res.json();
     },
 
-    // Budgets
+    async getCategory(id) {
+        const res = await this.request(`/categories/${id}/`);
+        return res.json();
+    },
+
+    async createCategory(data) {
+        const res = await this.request('/categories/', {
+            method: 'POST',
+            body: data
+        });
+        return res.json();
+    },
+
+    async updateCategory(id, data) {
+        const res = await this.request(`/categories/${id}/`, {
+            method: 'PUT',
+            body: data
+        });
+        return res.json();
+    },
+
+    async deleteCategory(id) {
+        const res = await this.request(`/categories/${id}/`, { method: 'DELETE' });
+        return res;
+    },
+
+    // ===== BUDGETS =====
+    async getBudgets(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        const res = await this.request(`/budgets/?${query}`);
+        return res.json();
+    },
+
     async getCurrentBudgets() {
         const res = await this.request('/budgets/current-month/');
+        return res.json();
+    },
+
+    async createBudget(data) {
+        const res = await this.request('/budgets/', {
+            method: 'POST',
+            body: data
+        });
+        return res.json();
+    },
+
+    async updateBudget(id, data) {
+        const res = await this.request(`/budgets/${id}/`, {
+            method: 'PUT',
+            body: data
+        });
+        return res.json();
+    },
+
+    async deleteBudget(id) {
+        const res = await this.request(`/budgets/${id}/`, { method: 'DELETE' });
+        return res;
+    },
+
+    // ===== PROFILE =====
+    async getProfile() {
+        const res = await this.request('/auth/profile/');
+        return res.json();
+    },
+
+    async updateProfile(data) {
+        const res = await this.request('/auth/profile/', {
+            method: 'PATCH',
+            body: data
+        });
         return res.json();
     }
 };

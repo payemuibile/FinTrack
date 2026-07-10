@@ -60,11 +60,18 @@
     background-color: var(--sidebar-bg) !important;
     transition: width 0.3s ease;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .sidebar.collapsed {
-    width: 70px;
+    width: 0;
+    min-width: 0;
     overflow: hidden;
+}
+
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .sidebar-nav {
+    visibility: hidden;
 }
 
 .sidebar .nav-link {
@@ -140,8 +147,16 @@
         position: fixed;
         z-index: 1000;
         transform: translateX(-100%);
+        transition: transform 0.3s ease;
     }
     .sidebar.mobile-open {
         transform: translateX(0);
+    }
+    .sidebar.collapsed {
+        width: var(--sidebar-width);
+    }
+    .sidebar.collapsed .sidebar-header,
+    .sidebar.collapsed .sidebar-nav {
+        visibility: visible;
     }
 }
