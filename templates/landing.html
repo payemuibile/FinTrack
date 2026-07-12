@@ -1,113 +1,111 @@
 <!-- templates/landing.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinTrack — See where it actually goes</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-{% load static %}
-<link href="{% static 'css/landing.css' %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>FinTrack</title>
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<header class="nav">
-    <div class="nav-inner">
-        <a href="/" class="brand">
-            <span class="brand-mark">FT</span>
-            <span class="brand-name">FinTrack</span>
-        </a>
-        <nav class="nav-links">
-            <a href="#features">Features</a>
-            <a href="/login/" class="nav-login">Log in</a>
-            <a href="/register/" class="nav-cta">Sign up free</a>
-        </nav>
+<section class="hero-section">
+    <h1 class="logo">FinTrack</h1>
+    <div class="padding"></div>
+    <div class="hero">
+        <p class="eyebrow">A ledger for the rest of us</p>
+        <h1>Know what<br>happened to<br><span class="ink-underline">your money.</span></h1>
+        <p class="hero-sub">
+            Log income and expenses, set category budgets, <br>and watch the
+            numbers add up.
+        </p>
     </div>
-</header>
+</section>
 
-<main>
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-inner">
-            <div class="hero-copy">
-                <p class="eyebrow">A ledger for the rest of us</p>
-                <h1>Know what<br>happened to<br><span class="ink-underline">your money.</span></h1>
-                <p class="hero-sub">
-                    Log income and expenses, set category budgets, and watch the
-                    numbers add up — for students, freelancers, and small business
-                    owners who are done guessing.
-                </p>
-                <div class="hero-actions">
-                    <a href="/register/" class="btn btn-primary">Start tracking — it's free</a>
-                    <a href="/login/" class="btn btn-ghost">I have an account</a>
+<section class="form-section">
+
+    <div class="card login-card" id="loginSection">
+        <h3>Welcome back</h3>
+        <p>Don't have an account? <a href="#" id="showSignup">Create an account now.</a></p>
+        <form id="loginForm" novalidate class="login-form-margin">
+            <div class="input-group login-margin">
+                <input type="text" name="user_name" id="loginUserName" placeholder=" " required autocomplete="username">
+                <label for="loginUserName">USERNAME</label>
+                <span id="loginUserNameError" class="error"></span>
+            </div>
+
+            <div class="input-group login-margin">
+                <input type="password" name="password" id="loginPassword" placeholder=" " required>
+                <label for="loginPassword">PASSWORD</label>
+                <span id="loginPasswordError" class="error"></span>
+            </div>
+
+            <div class="btn-div">
+                <span id="loginError" class="submit-error"></span>
+                <button type="submit" class="create-account-btn login-btn">Login &rarr;</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card hidden" id="signupSection">
+        <h3>Create Account</h3>
+        <p>Already have an account? <a href="#" id="showLogin">Log in now.</a></p>
+        <form id="signupForm" novalidate class="signup-form">
+            <div class="full-name">
+                <div class="input-group with-lastname">
+                    <input type="text" name="first_name" id="firstName" placeholder=" " required autocomplete="given-name">
+                    <label for="firstName">FIRST NAME</label>
+                    <span id="firstNameError" class="error"></span>
+                </div>
+                <div class="input-group with-lastname">
+                    <input type="text" name="last_name" id="lastName" placeholder=" " required autocomplete="family-name">
+                    <label for="lastName">LAST NAME</label>
+                    <span id="lastNameError" class="error"></span>
                 </div>
             </div>
 
-            <div class="ledger" aria-hidden="true">
-                <div class="ledger-head">
-                    <span>This week</span>
-                    <span class="ledger-balance" id="ledgerBalance">$0.00</span>
-                </div>
-                <ul class="ledger-rows" id="ledgerRows"></ul>
+            <div class="input-group">
+                <input type="text" name="user_name" id="signupUserName" placeholder=" " required autocomplete="username">
+                <label for="signupUserName">USERNAME</label>
+                <span id="signupUserNameError" class="error"></span>
             </div>
-        </div>
-    </section>
 
-    <!-- FEATURES -->
-    <section class="features" id="features">
-        <div class="features-inner">
-            <p class="eyebrow center">What you get</p>
-            <h2 class="features-title">Four habits, one place.</h2>
-
-            <div class="feature-grid">
-                <article class="feature-card">
-                    <span class="feature-num">Record</span>
-                    <h3>Every transaction, categorized</h3>
-                    <p>Log income and expenses in seconds. Each one gets a category,
-                       a color, and a date — so nothing slips through unsorted.</p>
-                </article>
-
-                <article class="feature-card">
-                    <span class="feature-num">Budget</span>
-                    <h3>Limits that warn you in time</h3>
-                    <p>Set a monthly ceiling per category. The progress bar turns
-                       amber at 80% and red at the line — before you're over it.</p>
-                </article>
-
-                <article class="feature-card">
-                    <span class="feature-num">See</span>
-                    <h3>Charts that explain themselves</h3>
-                    <p>A spending breakdown by category and a six-month income-vs-expense
-                       trend, rendered the moment you open your dashboard.</p>
-                </article>
-
-                <article class="feature-card">
-                    <span class="feature-num">Export</span>
-                    <h3>Your data, out the door anytime</h3>
-                    <p>Download any filtered view as a CSV — for taxes, a spreadsheet,
-                       or just peace of mind that it's yours.</p>
-                </article>
+            <div class="input-group">
+                <input type="email" name="email" id="email" placeholder=" " required autocomplete="email">
+                <label for="email">EMAIL ADDRESS</label>
+                <span id="emailError" class="error"></span>
             </div>
-        </div>
-    </section>
 
-    <section class="closing">
-        <div class="closing-inner">
-            <h2>Start your first entry today.</h2>
-            <p>No credit card. No spreadsheet to set up. Just sign up and add what you spent on lunch.</p>
-            <a href="/register/" class="btn btn-primary btn-lg">Create your free account</a>
-        </div>
-    </section>
-</main>
+            <div class="input-group">
+                <input type="password" name="password" id="signupPassword" placeholder=" " required>
+                <label for="signupPassword">PASSWORD</label>
+                <span id="signupPasswordError" class="error"></span>
+            </div>
 
-<footer class="footer">
-    <div class="footer-inner">
-        <span>FinTrack</span>
-        <span class="footer-dim">Built for people who'd rather know than wonder.</span>
+            <ul id="passwordCriteria" class="password-criteria hidden">
+                <li id="reqLength" class="invalid">At least 8 characters</li>
+                <li id="reqUpper" class="invalid">One uppercase letter</li>
+                <li id="reqLower" class="invalid">One lowercase letter</li>
+                <li id="reqSpecial" class="invalid">One special character</li>
+            </ul>
+
+            <div class="input-group">
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder=" " required>
+                <label for="confirmPassword">CONFIRM PASSWORD</label>
+                <span id="confirmPasswordError" class="error"></span>
+            </div>
+
+            <div class="btn-div">
+                <span id="signUpError" class="submit-error"></span>
+                <button type="submit" class="create-account-btn">Create Account &rarr;</button>
+            </div>
+        </form>
     </div>
-</footer>
+</section>
 
-<script src="{% static 'js/auth.js' %}"></script>
 <script src="{% static 'js/landing.js' %}"></script>
+<script src="{% static 'js/auth.js' %}"></script>
 </body>
 </html>
