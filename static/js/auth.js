@@ -23,7 +23,7 @@ const Auth = {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user_info');
-        window.location.href = '/login/';
+        window.location.href = '/';
     },
 
     getUserInfo() {
@@ -39,7 +39,7 @@ const Auth = {
 // Redirect to login if not authenticated (call this on protected pages)
 function requireAuth() {
     if (!Auth.isLoggedIn()) {
-        window.location.href = '/login/';
+        window.location.href = '/';
     }
 }
 

@@ -4,8 +4,8 @@
 
 from django.urls import path
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required  # only relevant if using session auth too
-from django.utils.decorators import method_decorator
+# from django.contrib.auth.decorators import login_required  # only relevant if using session auth too
+# from django.utils.decorators import method_decorator
 
 # NOTE: Since auth is JWT-based and checked client-side via requireAuth() in JS,
 # these views just need to serve the HTML shell. Django's @login_required is NOT
@@ -14,8 +14,6 @@ from django.utils.decorators import method_decorator
 urlpatterns = [
 
     path('', TemplateView.as_view(template_name='landing.html'), name='landing_page'),
-    path('login/', TemplateView.as_view(template_name='accounts/login.html'), name='login_page'),
-    path('register/', TemplateView.as_view(template_name='accounts/register.html'), name='register_page'),
     path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_page'),
     path('transactions/', TemplateView.as_view(template_name='transactions/list.html'), name='transactions_page'),
     path('categories/', TemplateView.as_view(template_name='transactions/categories.html'), name='categories_page'),

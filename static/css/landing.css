@@ -29,7 +29,7 @@ body {
     justify-content: space-between;
     /*background-color: var(--body);*/
     /*background-image: url("./images/bg.png");*/
-    /*background-image: url("images/maybe-the-one.png");*/
+    /*background-image: url("../images/maybe-the-one.png");*/
     background-image: url("/static/images/light-bg-reduce.png");
     /*background-image: url("images/light-bg-reduce.png");*/
     background-repeat: no-repeat;

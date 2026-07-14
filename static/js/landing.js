@@ -72,6 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
         /[a-z]/.test(val) ? setValid(reqLower) : setInvalid(reqLower);
         // Check Special Character
         /[!@#$%^&*(),.?":{}|<>]/.test(val) ? setValid(reqSpecial) : setInvalid(reqSpecial);
+
+        const isStrong = val.length >= 8 && /[A-Z]/.test(val) && /[a-z]/.test(val) && /[!@#$%^&*(),.?":{}|<>]/.test(val);
+        if (isStrong) {
+            passwordCriteriaList.classList.add('hidden');
+        }
     });
 
     function setValid(element) {
@@ -84,32 +89,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Sign Up Submission
-    signupForm.addEventListener('submit', (e) => {
+    signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         clearError(signupForm);
         let isValid = true;
 
-        if (firstName.value.trim() === '') {
+        const firstnameVal = firstName.value.trim();
+        if (firstnameVal === '') {
             showError(firstName, 'firstNameError', 'First name is required');
+            isValid = false;
+        } else if (/\d/.test(firstnameVal)) {
+            showError(firstName, 'firstNameError', 'Cannot be a number');
+            isValid = false;
+        } else if (firstnameVal < 3) {
+            showError(firstName, 'firstNameError', 'Must be at least 3 characters');
             isValid = false;
         }
 
-        if (lastName.value.trim() === '') {
+        const lastnameVal = lastName.value.trim();
+        if (lastnameVal === '') {
             showError(lastName, 'lastNameError', 'Last name is required');
+            isValid = false;
+        } else if (/\d/.test(lastnameVal)) {
+            showError(lastName, 'lastNameError', 'Cannot be a number')
+            isValid = false;
+        } else if (lastnameVal.length < 3) {
+            showError(lastName, 'lastNameError', 'Must be at least 3 characters');
             isValid = false;
         }
 
         // Username Regex Validation: Only word characters, min length 3
         const usernameRegex = /^\w{3,}$/;
-        if (!usernameRegex.test(signupUserName.value.trim())) {
+        const usernameVal = signupUserName.value.trim();
+        if (!usernameRegex.test(usernameVal)) {
             showError(signupUserName, 'signupUserNameError', 'Must be at least 3 characters (letters, numbers, underscores only)');
             isValid = false;
+        } else {
+            // Check username in DB
+            try {
+                const res = await fetch(`/api/auth/check-user/?username=${encodeURIComponent(usernameVal)}`);
+                const data = await res.json();
+                if (data.exists) {
+                    showError(signupUserName, 'signupUserNameError', 'Username already exists');
+                    isValid = false;
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email.value.trim())) {
+        const emailVal = email.value.trim();
+        if (!emailRegex.test(emailVal)) {
             showError(email, 'emailError', 'Please enter a valid email address');
             isValid = false;
+        } else {
+            // Check email in DB
+            try {
+                const res = await fetch(`/api/auth/check-user/?email=${encodeURIComponent(emailVal)}`);
+                const data = await res.json();
+                if (data.exists) {
+                    showError(email, 'emailError', 'Email address already exists');
+                    isValid = false;
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         // Password Strong Validation
@@ -129,7 +174,55 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isValid) {
             signUpError.textContent = 'Processing...';
             signUpError.style.color = 'green';
-            form.submit();
+            
+            try {
+                const response = await fetch('/api/auth/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: usernameVal,
+                        email: emailVal,
+                        password: val,
+                        first_name: firstnameVal,
+                        last_name: lastnameVal
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (typeof Auth !== 'undefined' && data.access && data.refresh) {
+                        Auth.setTokens(data.access, data.refresh);
+                        Auth.setUserInfo({
+                            username: usernameVal,
+                            first_name: firstnameVal,
+                            last_name: lastnameVal
+                        });
+                        window.location.href = '/dashboard/';
+                    } else {
+                        signUpError.textContent = 'Account created! Please log in.';
+                        signUpError.style.color = 'green';
+                        setTimeout(() => {
+                            signupSection.classList.add('hidden');
+                            loginSection.classList.remove('hidden');
+                            loginUserName.value = usernameVal;
+                        }, 1500);
+                    }
+                } else {
+                    signUpError.textContent = data.detail || 'An error occurred during registration.';
+                    signUpError.style.color = 'red';
+                    // Field specific errors
+                    if (data.username) showError(signupUserName, 'signupUserNameError', data.username[0]);
+                    if (data.email) showError(email, 'emailError', data.email[0]);
+                    if (data.password) showError(signupPassword, 'signupPasswordError', data.password[0]);
+                }
+            } catch (err) {
+                console.error(err);
+                signUpError.textContent = 'Network error. Please try again.';
+                signUpError.style.color = 'red';
+            }
         } else {
             signUpError.textContent = 'Please fix the errors above to continue.';
             signUpError.style.color = 'red';
@@ -142,14 +235,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginPassword = document.getElementById('loginPassword');
     const loginError = document.getElementById('loginError');
 
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         clearError(loginForm);
 
         let isValid = true;
 
         // Basic frontend empty checks
-        if (loginUserName.value.trim() === '') {
+        loginUsernameVal = loginUserName.value.trim();
+        if (loginUsernameVal === '') {
             showError(loginUserName, 'loginUserNameError', 'Username is required');
             isValid = false;
         }
@@ -159,11 +253,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if(isValid) {
-            // Simulated Backend Error: "User not found or incorrect password"
-            loginError.textContent = 'Username or password is not correct.';
-            loginError.style.color = 'red';
-            loginUserName.style.borderBottomColor = 'red';
-            loginPassword.style.borderBottomColor = 'red';
+            loginError.textContent = 'Logging in...';
+            loginError.style.color = 'green';
+            
+            try {
+                const response = await fetch('/api/auth/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: loginUsernameVal,
+                        password: loginPassword.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (typeof Auth !== 'undefined') {
+                        Auth.setTokens(data.access, data.refresh);
+                        // Fetch profile info for name
+                        const profileRes = await fetch('/api/auth/profile/', {
+                            headers: { 'Authorization': `Bearer ${data.access}` }
+                        });
+                        if (profileRes.ok) {
+                            const profileData = await profileRes.json();
+                            Auth.setUserInfo({
+                                username: loginUsernameVal,
+                                first_name: profileData.first_name || '',
+                                last_name: profileData.last_name || ''
+                            });
+                        }
+                    }
+                    window.location.href = '/dashboard/';
+                } else {
+                    loginError.textContent = data.detail || 'Username or password is not correct.';
+                    loginError.style.color = 'red';
+                    loginUserName.style.borderBottomColor = 'red';
+                    loginPassword.style.borderBottomColor = 'red';
+                }
+            } catch (err) {
+                console.error(err);
+                loginError.textContent = 'Network error. Please try again.';
+                loginError.style.color = 'red';
+            }
         }
     });
 });
