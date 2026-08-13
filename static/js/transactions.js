@@ -163,7 +163,7 @@ async function populateCategoryFilterAndForm() {
 
 function renderCategoryOptionsForType(type) {
     const select = document.getElementById('category');
-    const categories = (window._categoriesCache || []).filter(c => c.category === type);
+    const categories = (window._categoriesCache || []).filter(c => c.category_type === type);
     select.innerHTML = '<option value="">Select category...</option>' +
         categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }

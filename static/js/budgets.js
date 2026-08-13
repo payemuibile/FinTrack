@@ -47,7 +47,7 @@ function setupMonthYearSelectors() {
 
 async function loadExpenseCategories() {
     const categories = await ApiClient.getCategories();
-    expenseCategories = categories.filter(c => c.category === 'expense');
+    expenseCategories = categories.filter(c => c.category_type === 'expense');
 
     const select = document.getElementById('budgetCategory');
     select.innerHTML = expenseCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');

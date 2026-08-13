@@ -29,7 +29,7 @@ class TransactionApiEndpointTests(APITestCase):
             '/api/categories/',
             {
                 'name': 'Gifts',
-                'category': 'expense',
+                'category_type': 'expense',
                 'color': '#123abc',
                 'icon': 'bi-gift',
             },
@@ -183,7 +183,7 @@ class TransactionApiEndpointTests(APITestCase):
         Category.objects.create(
             user=other_user,
             name='Other Category',
-            category='expense',
+            category_type='expense',
             color='#111111',
         )
         Transaction.objects.create(

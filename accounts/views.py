@@ -23,7 +23,7 @@ class CheckUserView(APIView):
             
         return Response({'exists': False})
 
-from rest_framework_simplejwt.tokens import RefreshToken
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()

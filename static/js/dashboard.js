@@ -163,6 +163,7 @@ async function populateCategoryDropdown() {
     if (!select) return;
 
     const categories = await ApiClient.getCategories();
+
     window._categoriesCache = categories; // used to filter by type below
 
     renderCategoryOptions('expense');
@@ -175,7 +176,7 @@ async function populateCategoryDropdown() {
 
 function renderCategoryOptions(type) {
     const select = document.getElementById('category');
-    const categories = (window._categoriesCache || []).filter(c => c.category === type);
+    const categories = (window._categoriesCache || []).filter(c => c.category_type === type);
 
     select.innerHTML = '<option value="">Select category...</option>' +
         categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');

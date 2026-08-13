@@ -32,7 +32,7 @@ function switchTab(event, type) {
 
 function renderGrid() {
     const grid = document.getElementById('categoryGrid');
-    const filtered = allCategories.filter(c => c.category === activeTab);
+    const filtered = allCategories.filter(c => c.category_type === activeTab);
 
     if (!filtered.length) {
         grid.innerHTML = `<div class="col-12 text-center text-muted py-4">
@@ -87,7 +87,7 @@ function editCategory(id) {
     document.getElementById('editCategoryId').value = c.id;
     document.getElementById('categoryModalTitle').textContent = 'Edit Category';
     document.getElementById('catName').value = c.name;
-    document.getElementById('catType').value = c.category;
+    document.getElementById('catType').value = c.category_type;
     document.getElementById('catColor').value = c.color;
     document.getElementById('catIcon').value = c.icon;
 
@@ -105,7 +105,7 @@ function setupSaveHandler() {
 
         const editId = document.getElementById('editCategoryId').value;
         const name = document.getElementById('catName').value.trim();
-        const category = document.getElementById('catType').value;
+        const category_type = document.getElementById('catType').value;
         const color = document.getElementById('catColor').value;
         const icon = document.getElementById('catIcon').value;
 
@@ -119,7 +119,7 @@ function setupSaveHandler() {
         btnText.textContent = 'Saving...';
         spinner.classList.remove('d-none');
 
-        const payload = { name, category, color, icon };
+        const payload = { name, category_type, color, icon };
 
         try {
             const endpoint = editId ? `/categories/${editId}/` : '/categories/';

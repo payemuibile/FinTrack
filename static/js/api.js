@@ -125,7 +125,11 @@ const ApiClient = {
     // ===== CATEGORIES =====
     async getCategories() {
         const res = await this.request('/categories/');
-        return res.json();
+        const data = await res.json();
+
+        // Category list responses are paginated by Django REST Framework.
+        // Always expose an array to callers so dropdowns can render it.
+        return data.results || data;
     },
 
     async getCategory(id) {

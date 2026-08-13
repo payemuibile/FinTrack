@@ -4,7 +4,6 @@
 
 from django.urls import path
 from django.views.generic import TemplateView
-# from django.contrib.auth.decorators import login_required  # only relevant if using session auth too
 # from django.utils.decorators import method_decorator
 
 # NOTE: Since auth is JWT-based and checked client-side via requireAuth() in JS,

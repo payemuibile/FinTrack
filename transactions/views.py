@@ -30,10 +30,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None
 
     def get_queryset(self):
-        # if not Category.objects.filter(user=self.request.user, is_default=True).exists():
-        #     seed_default_categories(self.request.user)
+        if not Category.objects.filter(user=self.request.user, is_default=True).exists():
+            from .models import seed_default_categories
+            seed_default_categories(self.request.user)
         #CRITICAL: Users only see their own categories
         return Category.objects.filter(user=self.request.user)
 
@@ -142,6 +144,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
 class BudgetViewSet(viewsets.ModelViewSet):
     serializer_class = BudgetSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None
 
     def get_queryset(self):
         return Budget.objects.filter(user=self.request.user).select_related(
