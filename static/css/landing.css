@@ -24,7 +24,7 @@
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: space-between;
     /*background-color: var(--body);*/
@@ -41,8 +41,9 @@ body {
 
 .hero-section {
     width: 100%;
+    max-width: 760px;
     background-color: transparent;
-    padding: 20px;
+    padding: 40px 32px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -54,18 +55,18 @@ body {
     font-size: 1.4rem;
     color: var(--logo);
     position: absolute;
-    top: 70px;
-    left: 144px;
+    top: 82px;
+    left: 120px;
 }
 .padding {
-    width: 200px;
+    width: 130px;
 }
 .hero {
     background-color: transparent;
 }
 
 .hero h1 {
-    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
     color: var(--hero-ink);
     letter-spacing: 0.04em;
     line-height: 1.05;
@@ -105,8 +106,8 @@ body {
 .form-section {
     background-color: var(--card);
     backdrop-filter: blur(40px);
-    width: 1000px;
-    padding: 20px;
+    width: min(1000px, 100%);
+    padding: 30px 24px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,8 +119,8 @@ a {
 .card {
     /*background-color: var(--card);*/
     padding: 35px 30px 25px 30px;
-    width: 85%;
-    min-width: 25rem;
+    width: min(85%, 520px);
+    min-width: 0;
     border-radius: 25px;
     /*border: 2px double var(--border);*/
 /*    responsible for the blur*/
@@ -127,7 +128,7 @@ a {
 /*    box-shadow: 0 4px 30px var(--shadow);*/
 }
 .login-card {
-    width: 75%;
+    width: min(75%, 460px);
 }
 .card h3 {
     font-family: Roboto, sans-serif;
@@ -211,9 +212,12 @@ a {
     color: var(--error-text);
     position: absolute;
     bottom: 105px;
-    left: 38px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 0.75rem;
     font-family: Roboto, sans-serif;
+    width: calc(100% - 40px);
+    text-align: center;
 }
 .btn-div {
     display: flex;

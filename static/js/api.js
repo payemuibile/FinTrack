@@ -197,6 +197,11 @@ const ApiClient = {
         return res.json();
     },
 
+    //for currency dropdown in the user profile
+    async getCurrencyOptions() {
+        const res = await this.request('');
+        return res.json();
+    },
     async updateProfile(data) {
         const res = await this.request('/auth/profile/', {
             method: 'PATCH',

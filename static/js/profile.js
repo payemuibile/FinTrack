@@ -14,7 +14,7 @@ async function loadProfile() {
     document.getElementById('profEmail').value = profile.email || '';
     document.getElementById('profFirstName').value = profile.first_name || '';
     document.getElementById('profLastName').value = profile.last_name || '';
-    document.getElementById('profCurrency').value = profile.currency || 'USD';
+    document.getElementById('profCurrency').value = profile.currency || 'JPG';
 }
 
 async function loadAccountStats() {
@@ -96,5 +96,5 @@ function setupSaveHandler() {
 }
 
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
 }

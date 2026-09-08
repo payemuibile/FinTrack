@@ -10,16 +10,6 @@ from .models import Category, Transaction, Budget, UserProfile
 from .serializers import CategorySerializer, TransactionSerializer, BudgetSerializer, UserProfileSerializer
 from .filters import TransactionFilter
 
-"""
-#checking the views if i will get a data to the frontend
-def category_view_modal(request):
-
-    category = Category.objects.all().values('name').distinct()
-
-    context = {
-        category : 'category'
-    }
-    return render(request, 'dashboard.html', context)"""
 
 # Create your views here.
 class CategoryViewSet(viewsets.ModelViewSet):

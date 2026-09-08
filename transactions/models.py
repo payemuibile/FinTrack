@@ -164,7 +164,7 @@ class UserProfile(models.Model):
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
-        default='USD'
+        default='NGN'
     )
     avatar = models.ImageField(
         upload_to='avatars/',

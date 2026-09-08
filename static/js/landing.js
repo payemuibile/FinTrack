@@ -186,7 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         email: emailVal,
                         password: val,
                         first_name: firstnameVal,
-                        last_name: lastnameVal
+                        last_name: lastnameVal,
+                        password_confirm: confirmPassword.value
                     })
                 });
 
